@@ -1,15 +1,18 @@
 import pygame
 import sys
 
+#Ayarlar
 ekran_genislik = 800
 ekran_yukseklik = 600
 
+#Renkler
 beyaz = (255, 255, 255)
 siyah = (0,0,0)
 yesil = (0, 255, 0)
 kirmizi= (255,0,0)
 mavi = (0,0, 255)
 
+#Oyun Döngüsü
 class CizimOyunu:
     def __init__(self):
         pygame.init()
@@ -28,6 +31,8 @@ class CizimOyunu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+
+                #Girdiler
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.cizim = True
                     self.cizim_yolu.append([])
@@ -35,7 +40,7 @@ class CizimOyunu:
                     self.cizim = False
                 elif event.type == pygame.MOUSEMOTION and self.cizim == True:
                     pos = pygame.mouse.get_pos()
-                    self.cizim_yolu[-1].append(pos)
+                    self.cizim_yolu[-1].append((pos, self.cizgi_rengi))
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_c:
                         self.cizim_yolu = []
@@ -54,8 +59,12 @@ class CizimOyunu:
     def cizim_ciz(self):
         for yol in self.cizim_yolu:
             if len(yol) > 1:
-                pygame.draw.lines(self.ekran, self.cizgi_rengi, False, yol, self.cizgi_kalinligi)
+                pygame.draw.lines(self.ekran, yol[-1][1], False, [point[0] for point in yol], self.cizgi_kalinligi)
     
 if __name__ == "__main__":
     oyun = CizimOyunu()
     oyun.run()
+
+#Oyun Sonu
+pygame.quit()
+sys.exit()
